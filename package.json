@@ -1,21 +1,14 @@
 {
   "name": "rrs",
+  "private": true,
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node ."
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "@prisma/client": "^5.22.0",
-    "discord.js": "^14.16.3",
-    "dotenv": "^16.4.5"
+    "dev:bot": "pnpm --filter bot dev",
+    "dev:dashboard": "pnpm --filter dashboard dev",
+    "dev": "pnpm run --parallel dev:bot dev:dashboard"
   },
   "devDependencies": {
-    "prisma": "^5.22.0"
+    "prettier": "3.3.3"
   }
 }

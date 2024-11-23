@@ -1,0 +1,14 @@
+{
+  "name": "@rrs/db",
+  "private": true,
+  "version": "1.0.0",
+  "description": "",
+  "dependencies": {
+    "@prisma/client": "^5.22.0",
+    "dotenv": "^16.4.5",
+    "zod": "^3.x.x"
+  },
+  "devDependencies": {
+    "prisma": "^5.22.0"
+  }
+}

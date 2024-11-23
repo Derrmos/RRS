@@ -1,3 +1,53 @@
-node_modules
+# Dependencies
+node_modules/
+.pnpm-store/
+.pnpm-debug.log*
+
+# Environment
 .env
-*.db
+.env.*
+!.env.example
+
+# Next.js
+.next/
+out/
+build/
+next-env.d.ts
+
+# Database
+prisma/dev.db
+prisma/dev.db-journal
+prisma/*.db
+prisma/*.db-journal
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# IDE - JetBrains
+.idea/
+*.iml
+*.iws
+
+# OS
+.DS_Store
+*.pem
+
+# Testing
+coverage/
+
+# Misc
+*.local
+.vercel
+.turbo
+dist/
