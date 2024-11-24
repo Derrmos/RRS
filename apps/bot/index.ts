@@ -1,9 +1,20 @@
-const fs = require("node:fs");
-const path = require("node:path");
-const { Client, Collection, GatewayIntentBits } = require("discord.js");
-require("dotenv").config();
+import fs from "node:fs";
+import path from "node:path";
+import { ChatInputCommandInteraction, Client, Collection, GatewayIntentBits, SlashCommandBuilder } from "discord.js";
+import "dotenv/config";
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+
+interface Command {
+  data: SlashCommandBuilder;
+  execute: (interaction: ChatInputCommandInteraction) => Promise<void>;
+}
+
+declare module 'discord.js' {
+  export interface Client {
+    commands: Collection<String, Command>;
+  }
+}
 
 client.commands = new Collection();
 
@@ -14,7 +25,7 @@ for (const folder of commandFolders) {
   const commandsPath = path.join(foldersPath, folder);
   const commandFiles = fs
     .readdirSync(commandsPath)
-    .filter((file) => file.endsWith(".js"));
+    .filter((file) => file.endsWith(".ts"));
   for (const file of commandFiles) {
     const filePath = path.join(commandsPath, file);
     const command = require(filePath);
@@ -32,7 +43,7 @@ for (const folder of commandFolders) {
 const eventsPath = path.join(__dirname, "events");
 const eventFiles = fs
   .readdirSync(eventsPath)
-  .filter((file) => file.endsWith(".js"));
+  .filter((file) => file.endsWith(".ts"));
 
 for (const file of eventFiles) {
   const filePath = path.join(eventsPath, file);

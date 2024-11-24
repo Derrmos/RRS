@@ -1,16 +1,19 @@
-const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
-const { PrismaClient } = require("@prisma/client");
+import {
+  SlashCommandBuilder,
+  EmbedBuilder,
+  ChatInputCommandInteraction,
+} from "discord.js";
+// @ts-ignore
+import db from "@rrs/db";
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("myapplication")
     .setDescription("Voir votre candidature"),
-  async execute(interaction) {
+  async execute(interaction: ChatInputCommandInteraction) {
     await interaction.deferReply({ ephemeral: true });
 
-    const prisma = new PrismaClient();
-
-    const precedentApplication = await prisma.application.findUnique({
+    const precedentApplication = await db.application.findUnique({
       where: {
         userId: interaction.user.id,
       },
@@ -19,7 +22,6 @@ module.exports = {
       return await interaction.editReply({
         content:
           "Le service de recrutement de Ross Station ne trouve pas votre candidature...",
-        ephemeral: true,
       });
     }
     if (
@@ -28,7 +30,6 @@ module.exports = {
     ) {
       return await interaction.editReply({
         content: "Votre candidature a déjà été traitée...",
-        ephemeral: true,
       });
     }
 
@@ -45,15 +46,12 @@ module.exports = {
         { name: "Status :", value: precedentApplication.status, inline: true },
         { name: "\u200B", value: "\u200B" },
         { name: "Nom de CMD :", value: precedentApplication.cmdrName },
-        { name: "Présentation :", value: precedentApplication.presentation }
+        { name: "Présentation :", value: precedentApplication.presentation },
       )
       .setTimestamp();
 
     await interaction.editReply({
       embeds: [myApplicationEmbed],
-      ephemeral: true,
     });
-
-    await prisma.$disconnect();
   },
 };

@@ -1,15 +1,18 @@
-const { Events } = require("discord.js");
-const { PrismaClient } = require("@prisma/client");
+import { BaseInteraction, Events } from "discord.js";
+// @ts-ignore
+import db from "@rrs/db";
 
 module.exports = {
   name: Events.InteractionCreate,
-  async execute(interaction) {
+  async execute(interaction: BaseInteraction) {
     if (interaction.isChatInputCommand()) {
-      const command = interaction.client.commands.get(interaction.commandName);
+      const command = interaction.client.commands.get(
+        interaction.commandName,
+      );
 
       if (!command) {
         console.error(
-          `No command matching ${interaction.commandName} was found.`
+          `No command matching ${interaction.commandName} was found.`,
         );
         return;
       }
@@ -40,9 +43,7 @@ module.exports = {
 
         await interaction.deferReply({ ephemeral: true });
 
-        const prisma = new PrismaClient();
-
-        const precedentApplication = await prisma.application.findFirst({
+        const precedentApplication = await db.application.findFirst({
           where: {
             OR: [
               {
@@ -57,12 +58,11 @@ module.exports = {
         if (precedentApplication) {
           return await interaction.editReply({
             content: "Une candidature existe déjà !",
-            ephemeral: true,
           });
         }
 
         try {
-          await prisma.application.create({
+          await db.application.create({
             data: {
               userId: interaction.user.id,
               cmdrName: cmdrName,
@@ -73,16 +73,12 @@ module.exports = {
           await interaction.editReply({
             content:
               "Votre candidature a été reçue avec succès par les services de recrutement de Ross Station !",
-            ephemeral: true,
           });
         } catch (e) {
           await interaction.editReply({
             content: "There was an error while executing this command!",
-            ephemeral: true,
           });
         }
-
-        await prisma.$disconnect();
       }
     }
   },

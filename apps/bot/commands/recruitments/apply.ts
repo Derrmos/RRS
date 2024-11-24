@@ -1,16 +1,17 @@
-const {
+import {
   SlashCommandBuilder,
   ActionRowBuilder,
   ModalBuilder,
   TextInputBuilder,
   TextInputStyle,
-} = require("discord.js");
+  ChatInputCommandInteraction,
+} from "discord.js";
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("apply")
     .setDescription('Recrutement "The Azgharie"'),
-  async execute(interaction) {
+  async execute(interaction: ChatInputCommandInteraction) {
     const modal = new ModalBuilder()
       .setCustomId("applyModal")
       .setTitle('Recrutement "The Azgharie"');
@@ -25,10 +26,12 @@ module.exports = {
       .setLabel("Une petite présentation de votre CMD")
       .setStyle(TextInputStyle.Paragraph);
 
-    const firstActionRow = new ActionRowBuilder().addComponents(cmdrNameInput);
+    const firstActionRow = new ActionRowBuilder().addComponents(
+      cmdrNameInput,
+    ) as ActionRowBuilder<TextInputBuilder>;
     const secondActionRow = new ActionRowBuilder().addComponents(
-      presentationInput
-    );
+      presentationInput,
+    ) as ActionRowBuilder<TextInputBuilder>;
 
     modal.addComponents(firstActionRow, secondActionRow);
 

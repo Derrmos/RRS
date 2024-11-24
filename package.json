@@ -6,9 +6,11 @@
   "scripts": {
     "dev:bot": "pnpm --filter bot dev",
     "dev:dashboard": "pnpm --filter dashboard dev",
-    "dev": "pnpm run --parallel dev:bot dev:dashboard"
+    "dev": "pnpm run --parallel dev"
   },
   "devDependencies": {
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2",
     "prettier": "3.3.3"
   }
 }
